@@ -1,5 +1,6 @@
 from words_frequency import get_words_frequency
-from population import populate_database
+from population import populate
+from reliability import get_reliability
 
 files = ['ciencia', 'cinema', 'esportes', 'geografia', 'historia', 'musica', 'sociedade', 'tecnologia']
 
@@ -35,8 +36,16 @@ def write_vector_txt():
                 continue
             vector_file.write(vector[i] + '\n')
 
-def run_pages():
+def run_from_scratch():
+    # First: we need the pages file to be on /categories/pages/..., and their names into files
     for file in files:
         get_words_frequency(file)
     write_vector_txt()
-    populate_database()
+    populate()
+    porcentagem, erros = get_reliability()
+    print("Acertividade do algoritmo: {:.2f}%".format(100 - porcentagem * 100))
+
+def run_after_vector_defined():
+    populate()
+    porcentagem, erros = get_reliability()
+    print("Acertividade do algoritmo: {:.2f}%".format(100 - porcentagem * 100))

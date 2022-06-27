@@ -62,5 +62,3 @@ def populate():
             except:
                 print(f'{line.strip()} error')
     conn.commit()
-    
-populate()

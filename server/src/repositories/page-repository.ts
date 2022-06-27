@@ -36,6 +36,15 @@ const PageRepository = {
         );
     },
 
+    readByName: (nome: string, callback: (pagina: Pagina) => void) => {
+        const sql = 'SELECT * FROM PAGINA WHERE nome = ?';
+        const params = [nome];
+        database.get(sql, params, (err, row) => {
+            callback(row);
+        }
+        );
+    },
+
     update: (pagina: Pagina, callback: (notFound: boolean) => void) => {
         const sql = 'UPDATE PAGINA SET nome = ?, url = ?, palavras = ? WHERE id = ?';
         const params = [pagina.nome, pagina.url, pagina.palavras, pagina.id];

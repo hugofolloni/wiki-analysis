@@ -70,8 +70,5 @@ def compare_on_list(lista):
             error_list.append(page)
     return error_list
 
-porcentagem, erros = get_reliability()
-print(porcentagem)
-
 
                 

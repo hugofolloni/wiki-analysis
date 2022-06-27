@@ -29,6 +29,15 @@ PAGES_ROUTER.get('/search/:filter', (req, res) => {
 }
 );
 
+PAGES_ROUTER.get('/name/:name', (req, res) => {
+    const name = req.params.name;
+    PageRepository.readByName(name, (pagina) => {
+        res.json(pagina);
+    }
+    );
+}
+);
+
 PAGES_ROUTER.post('/', (req, res) => {
     const pagina = req.body as Pagina;
     PageRepository.create(pagina, (id) => {

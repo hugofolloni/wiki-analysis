@@ -14,6 +14,7 @@ const SQL_CREATE = `
 const database = new sqlite3.Database(DBSOURCE, (err) => {
     if (err) {
         console.error(err.message);
+        console.log("A tabela já existe!")
     }
     else {
         console.log('Connected to the database.');
