@@ -30,7 +30,7 @@ body {
   top: 50%;
   left: 50%;
   border: 2px solid #fff;
-  animation: load 3s 1 linear;
+  animation: load 3s 1 ease;
 }
 
 body {
