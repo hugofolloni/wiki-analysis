@@ -14,12 +14,10 @@ Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem co
     - vector: possui o vetor final encontrado para ser utilizado pelo algoritmo
 
 # O que falta
-- Cortar sociedade e ciência
-- Definir o vetor e colocá-lo no banco de dados
-- Rodar o algoritmo para cada uma das páginas escolhidas para ver se a categoria bate (calcular a porcentagem de acerto) e para popular o banco de dados
 - Criar e testar comparação entre dois artigos (achar o mais próximo dado um artigo)
 
 - Criar toda a parte do front-end (recepção da página, criação do vetor da página específica e retorno após passar pelo algoritmo de descoberta de categoria e de recomendação)
+- reescrever readme depois de atualizado para typescript
 
 # Ideia por trás do app
 - criar um arquivo txt para cada categoria, passando 100 artigos pra cada categoria (o usuário que resolver recriar pode passar outros txt pra “ensinar”)
