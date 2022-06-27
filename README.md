@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# wiki-analysis
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem como intuito responder a categoria de um artigo com base na sua url e outros artigos semelhantes, por meio de comparações usando álgebra linear. Será composto de um scrapper, para ler a página, algoritmos de comparação, algoritmos geradores do vetor final (utilizando a importância de uma palavra para uma categoria) e uma biblioteca de algebra linear.
 
-## Available Scripts
+# Estrutura 
+- scrapper: faz o scrappy da pagina que queremos analisar
+- comparision: faz a comparação da página que queremos analisar com as outras do bd
+- vector: determina quais palavras valem a pena serem usadas no vector
+- words_frequency: faz a contagem da ocorrência de cada palavra buscando criar o vetor ideal
+- library: possui todas as funções de algebra-linear criadas em aula
+- categories: possui as categorias analisadas na criação do vetor
+    - /pages: possui as páginas que foram utilizadas para criar o vetor
+    - /words: possui a lista de palavras encontradas nas páginas utilizadas, ordenadas por frequência
+    - vector: possui o vetor final encontrado para ser utilizado pelo algoritmo
 
-In the project directory, you can run:
+# O que falta
+- Cortar sociedade e ciência
+- Definir o vetor e colocá-lo no banco de dados
+- Rodar o algoritmo para cada uma das páginas escolhidas para ver se a categoria bate (calcular a porcentagem de acerto) e para popular o banco de dados
+- Criar e testar comparação entre dois artigos (achar o mais próximo dado um artigo)
 
-### `npm start`
+- Criar toda a parte do front-end (recepção da página, criação do vetor da página específica e retorno após passar pelo algoritmo de descoberta de categoria e de recomendação)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Ideia por trás do app
+- criar um arquivo txt para cada categoria, passando 100 artigos pra cada categoria (o usuário que resolver recriar pode passar outros txt pra “ensinar”)
+- pra cada artigo, fazer scrappy e anotar frequência das palavras somadas nos 100 arquivos
+- pegar as 100 mais comuns de cada categoria
+- ver as palavras que aparecem apenas na categoria específica
+- essas serão as 50 palavras constituintes da categoria no vetor
+- rodar novamente os 100 artigos de cada categoria e guardar no banco de dados seu título, seu vetor e sua categoria
+- rodar mais 500 páginas guardando também no banc de dados seu título, vetor e categoria
+- quando o usuário passar a pagina, vai ser gerado o vetor e comparado com cada vetor do banco de dados, - vendo a menor distância (ou cosseno), então será retornada a categoria e o vetor
+- a categoria será determinada pela frequência média de aparições por palavra de certa categoria do vetor (se a parte de história do vetor tem 100 palavras e apareceram essas palavras 200 vezes, a área história tem 2 de frequência. a área com mais frequência será a categoria escolhida), e o vetor de recomendação pela menor distancia (ou cosseno)
+- telas de loading bonitas e aviso que será um processo demorado
+- reescrever readme depois de atualizado para typescript
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Artigos interessantes
+- https://github.com/leomattes/NLP_Portugues/blob/master/Frase2VecPortuguese.ipynb
+- http://nilc.icmc.usp.br/nilc/index.php/repositorio-de-word-embeddings-do-nilc
+- https://www.kaggle.com/datasets/mozzie/apache-spark-word2ve
+- https://www.linkedin.com/pulse/word2vec-em-português-para-classificação-decimal-de-dewey-mattes/?originalSubdomain=pt
 
-### `npm test`
+# Funcionamento
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Preparação
+- O administrador define artigos para cada uma das categorias dentro da pasta /categorias/pages  
+    - O preferencial é que haja ao mínimo 50 artigos de cada categoria
+- Após isso, o scrapper faz o scrappy dos artigos e o get_words_frequency as palavras mais comuns em /categorias/pages/words
+    - Ignorando as palavras definidas em generic
+- O algoritmo de comparação entre categorias então é rodado, definindo para cada categoria, quais palavras são comuns apenas nela
+    - Então são escolhidas as 50 palavras únicas de categoria mais comuns, após fazer uma limpeza de palavras (às vezes a palavra não indica muita coisa)
+- É rodado o population, buscando popular o banco de dados com as páginas já escolhidas, definindo a categoria delas como a categoria anteriormente definida
 
-### `npm run build`
+## Execução
+- O usuário solicita categorização de um arquivo da wikipedia, passando uma página
+- O scrapper faz o scrappy e joga a lista de palavras para o comparision
+- Em page_vector, o vetor da página é feito, e depois enviado ao comparisiom que irá compará-lo com os vetores do banco de dados
+- O sistema define como a categoria a média de categoria dos vetores mais próximos, retornando também os 3 vetores mais próximos como recomendação.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Erro inicial
+Tivemos uma porcentagem de erro de 8.8% no algoritmo para um banco recém-criado, de 575 páginas.
