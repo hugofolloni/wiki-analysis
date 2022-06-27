@@ -16,8 +16,6 @@ Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem co
 # O que falta
 
 - Criar estilização
-- Limitar resutlado caso busca já exista no BD (excluir ele da lista de semelhantes)
-- Salvar novas buscar no bacno de dados (nao esta funcionando)
 - reescrever readme depois de atualizado para typescript
 
 # Ideia por trás do app

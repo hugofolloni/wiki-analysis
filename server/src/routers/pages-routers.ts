@@ -41,7 +41,12 @@ PAGES_ROUTER.get('/name/:name', (req, res) => {
 PAGES_ROUTER.post('/', (req, res) => {
     const pagina = req.body as Pagina;
     PageRepository.create(pagina, (id) => {
-        res.json({ id });
+        if(id){
+            res.status(201).location(`/pages/${id}`).send();
+        }
+        else{
+            res.status(400).send();
+        }
     }
     );
 }

@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import cheerio from 'cheerio';
-// import { distance, cosine } from '../library'
-// import math from 'mathjs';
 import { distance, cosine } from '../library';
 
 const Analysis: React.FC = () => {
@@ -11,7 +9,8 @@ const Analysis: React.FC = () => {
         distance: number,
         page: string,
         cosine: number,
-        category: string
+        category: string,
+        url: string
     }
 
     type Occurrence = {
@@ -28,12 +27,10 @@ const Analysis: React.FC = () => {
     const [fourthByCosine, setFourthByCosine] = useState<Similarity>();
     const [fifthByCosine, setFifthByCosine] = useState<Similarity>();
 
-    const [page, setPage] = useState<string>('');
+    const [secondaryCategory, setSecondaryCategory] = useState<string>('');
+    const [existSecondaryCategory, setExistSecondaryCategory] = useState<boolean>(false);
 
-    useEffect(() => {
-        const location = window.location.href;
-        setPage(location.split('?page=')[1]);
-    }, []);
+    const [page, setPage] = useState<string>('');
 
     const getDataFromURL = async () => {
         try {
@@ -75,7 +72,6 @@ const Analysis: React.FC = () => {
                     count: pageVector[loop]
                 })
             }
-            console.log(ocorrencias)
             return pageVector;
         }
         catch (error) {
@@ -84,9 +80,21 @@ const Analysis: React.FC = () => {
         }
     }
 
+    const getPageTitle = async () => {
+            const proxy = 'https://the-cors.herokuapp.com/';
+            const pageUrl = 'https://pt.wikipedia.org/wiki/' + page;
+            const myURL = `${proxy}${pageUrl}`
+            const { data } = await axios.get(myURL);
+            const $ = cheerio.load(data);
+
+            return $('.firstHeading').text();
+    }
+
 
     const runVector = async () => {
+        setRunningAnswer(true);
         var pageVector = await getDataFromURL() as number[];
+        var pageTitle = await getPageTitle() as string;
         var distances: Similarity[] = [];
         var cosines: Similarity[] = [];
         fetch('http://localhost:4000/api')
@@ -94,66 +102,78 @@ const Analysis: React.FC = () => {
         .then(data => {
             const dbLength = data.length;
             for(var i = 0; i < dbLength; i++){
+                if(data[i].url === 'https://pt.wikipedia.org/wiki/' + page || data[i].nome.toLowerCase() === page.toLowerCase()){
+                    continue;
+                }
                 const dbStrings: string[] = data[i].vetor.replace('[', '').replace(']', '').split(',') 
                 var dbVector = dbStrings.map(str => parseInt(str))
-                distances.push({ distance: distance(pageVector, dbVector), page: data[i].nome, cosine: cosine(pageVector, dbVector), category: data[i].categoria })
-                cosines.push({ cosine: cosine(pageVector, dbVector), page: data[i].nome, distance: distance(pageVector, dbVector), category: data[i].categoria })
+                distances.push({ distance: distance(pageVector, dbVector), page: data[i].nome, cosine: cosine(pageVector, dbVector), category: data[i].categoria, url: data[i].url })
+                cosines.push({ cosine: cosine(pageVector, dbVector), page: data[i].nome, distance: distance(pageVector, dbVector), category: data[i].categoria, url: data[i].url })
             }
         })
         .catch(err => console.log(err))
         .then(() => {
             distances.sort((a, b) => a.distance - b.distance)
-            console.log(distances)
             cosines.sort((a, b) => a.cosine - b.cosine).reverse()
-            console.log(cosines)
             setFirstByCosine(cosines[0])
             setSecondByCosine(cosines[1])
             setThirdByCosine(cosines[2])    
             setFourthByCosine(cosines[3])
             setFifthByCosine(cosines[4])
             const categories = [cosines[0].category, cosines[1].category, cosines[2].category, cosines[3].category, cosines[4].category]
-            setCategory(findCategory(categories)[0])
-        //     fetch(`http://localhost:4000/api/`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         console.log(data)
-        //         var existOnDB = false;
-        //         for(var i = 0; i < data.length; i++){
-        //             if(pageTitle === data[i].nome){
-        //                 existOnDB = true;
-        //             }
-        //         }
-        //         if(!existOnDB){
-        //             const pageUrl = 'https://pt.wikipedia.org/wiki/' + page
-        //             const reqBody = JSON.stringify({
-        //                 nome: pageTitle,
-        //                 vetor: `[${pageVector}]`,
-        //                 categoria: findCategory(categories)[1],
-        //                 url: pageUrl
-        //             })
-        //             fetch('http://localhost:4000/api', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json'
-        //                 },
-        //                 body: reqBody
-        //             })
-        //             .then(res => res.json())
-        //             .then(() => {
-        //                 console.log('Salvo novo registro')
-        //             })
-        //         }
-        //         else{
-        //             console.log("Já existe")
-        //         }   
-        //  })
+            const category = findCategory(categories)
+            setCategory(category[0][0])
+            if(category[0][0] !== category[0][1]){
+                setSecondaryCategory(category[0][1])
+                setExistSecondaryCategory(true)
+            }
+            else{
+                setSecondaryCategory('')
+                setExistSecondaryCategory(false)
+            }
+            var existOnDB = false;
+            console.log(pageTitle)
+            fetch(`http://localhost:4000/api/`)
+            .then(res => res.json())
+            .then(data => {
+                for(var i = 0; i < data.length; i++){
+                    if(pageTitle.toLowerCase() === data[i].nome.toLowerCase()){
+                        existOnDB = true;
+                    }
+                }
+            })
+            .then(() => {
+                if(!existOnDB){
+                    const pageUrl = 'https://pt.wikipedia.org/wiki/' + page
+                    const reqBody = JSON.stringify({
+                        nome: pageTitle,
+                        vetor: `[${pageVector}]`,
+                        categoria: findCategory(categories)[1],
+                        url: pageUrl
+                    })
+                    fetch('http://localhost:4000/api', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: reqBody
+                    })
+                    .then(res => res.json())
+                    .then(() => {
+                        console.log('Salvo novo registro')
+                    })
+                }
+                else{
+                    console.log("Já existe")
+                }   
+            })
             setShowAnswer(true)
         })
     }
 
     const findCategory = (array: string[]) => {
         var arrayCategorias: number[] = [0, 0, 0, 0, 0, 0, 0, 0];
-        var categorias = ["Ciências", "Cinema", "Esportes", "Geografia", "História", "Música", "Sociedade", "Tecnologia"]
+        var categorias = ["Ciências", "Entretenimento", "Esportes", "Geografia", "História", "Música", "Sociedade", "Tecnologia"]
         var vectorCategories = ['ciencias', 'cinema', 'esportes', 'geografia', 'historia', 'musica', 'sociedade', 'tecnologia']
         for(var i = 0; i < array.length; i++){
             if(array[i] === 'ciencias'){
@@ -181,26 +201,67 @@ const Analysis: React.FC = () => {
                 arrayCategorias[7]++
             }
         }
-        return [categorias[arrayCategorias.indexOf(Math.max(...arrayCategorias))], vectorCategories[arrayCategorias.indexOf(Math.max(...arrayCategorias))]];
+        var maxIndex = arrayCategorias.indexOf(Math.max(...arrayCategorias))
+        var main = categorias[maxIndex]
+        arrayCategorias[maxIndex] = 0
+        var secondIndex = arrayCategorias.indexOf(Math.max(...arrayCategorias))
+        var second = categorias[secondIndex]
+        if(arrayCategorias[secondIndex] === 0){
+            second = main
+        }
+        return [[main, second], vectorCategories[maxIndex]];
     }
    
+    const [runningAnswer, setRunningAnswer] = useState(false)
+
+    const reset = () => {
+        window.location.reload()
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            runVector();
+        }
+    }
 
     return (
-        <div>
-            <h1>Analysis</h1>
-            <h2>Analisar {pageTitle}</h2>
-            <button onClick={() => runVector()}>Run</button>
-            {showAnswer && (
-                <div>
-                    <h2>Resultados</h2>
-                    <h3>Categoria: {category}</h3>
-                    <h5>First by Cosine: {firstByCosine?.page} - {firstByCosine?.cosine.toFixed(3)}</h5>
-                    <h5>Second by Cosine: {secondByCosine?.page} - {secondByCosine?.cosine.toFixed(3)}</h5>
-                    <h5>Third by Cosine: {thirdByCosine?.page} - {thirdByCosine?.cosine.toFixed(3)}</h5>
-                    <h5>Fourth by Cosine: {fourthByCosine?.page} - {fourthByCosine?.cosine.toFixed(3)}</h5>
-                    <h5>Fifth by Cosine: {fifthByCosine?.page} - {fifthByCosine?.cosine.toFixed(3)}</h5>
-                </div>
-            )}
+        <div className='main'>
+            <div className="main-texts">
+                <h4>Me diga a página da wikipedia e eu lhe retorno sua categoria e outras páginas semelhantes!</h4>
+                <p>Atenção: deve ser escrito como no título ou URL da página!</p>
+            </div>
+            <div className="inputs-field">
+                <input type="text" value={page} onChange={(e) => setPage(e.target.value)} onKeyDown={(e) => handleKeyDown(e)}/>
+                <button onClick={() => runVector()}>Analisar</button>
+            </div>
+            {runningAnswer && (
+                <div className="translucent">
+                    <div className="answer-div">
+                    <p onClick={() => reset()} className='close-button'>X</p>
+                    <div className="loader"/>
+                    {showAnswer && (
+                        <div className='main-answer'>
+                            <h2 className='page-title'>{pageTitle}</h2>
+                            <div className="category">
+                                <h3>Categoria: {category}</h3>
+                                {existSecondaryCategory && (
+                                    <h4>Categoria secundária: {secondaryCategory}</h4>
+                                )}    
+                            </div>
+                            <div className="recom">
+                                <h3>Recomendações:</h3>
+                                <h5>- <a target='_blank' rel='noreferrer' href={firstByCosine?.url}>{firstByCosine?.page}</a> - {firstByCosine?.cosine.toFixed(3)}</h5>
+                                <h5>- <a target='_blank' rel='noreferrer' href={secondByCosine?.url}>{secondByCosine?.page}</a> - {secondByCosine?.cosine.toFixed(3)}</h5>
+                                <h5>- <a target='_blank' rel='noreferrer' href={thirdByCosine?.url}>{thirdByCosine?.page}</a> - {thirdByCosine?.cosine.toFixed(3)}</h5>
+                                <h5>- <a target='_blank' rel='noreferrer' href={fourthByCosine?.url}>{fourthByCosine?.page}</a> - {fourthByCosine?.cosine.toFixed(3)}</h5>
+                                <h5>- <a target='_blank' rel='noreferrer' href={fifthByCosine?.url}>{fifthByCosine?.page}</a> - {fifthByCosine?.cosine.toFixed(3)}</h5>
+                            </div>
+                        </div>
+                    
+                 )}
+                 </div>
+                </div>)}
+            
         </div>
     );
 }

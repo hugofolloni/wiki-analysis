@@ -1,13 +1,249 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+*{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  border: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  background: #fafafa;
+}
+
+@keyframes load {
+  0% {
+      box-shadow: 0 0 #5A0B4D inset;
+  }
+  100% {
+      box-shadow: 0 -70px #5A0B4D inset;
+  }
+}
+
+.loader {
+  transform: perspective(140px) rotateX(-45deg);
+  width: 32px;
+  height: 72px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 2px solid #fff;
+  animation: load 3s 1 linear;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40vh;
+  width: 100vw;
+  background-color: #5A0B4D;
+  z-index: -1;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 80vw;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10vh;
+  margin-left: 10vw;
+  color: white;
+  font-size: 25px;
+  letter-spacing: -4px;
+  font-weight: bold;
+}
+
+.header a {
+  color: white;
+  letter-spacing: -2px;
+  font-size: 18px;
+  transition: 0.3s ease all;
+  width: 120px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header a:hover {
+  color: #5A0B4D;
+  background-color: white;
+  border-radius: 12px;
+}
+
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+  height: 30vh;
+  border: 1px solid #5A0B4D;
+  border-radius: 10px;
+  background-color: #fafafa;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.main-texts {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.inputs-field {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 30%;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.answer-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  background-color: #fafafa;
+  width: 80vw;
+  height: 70vh;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15vh;
+  margin-left: 10vw;
+  border-radius: 15px;
+}
+
+input {
+  width: 60%;
+  height: 40px;
+  border: 1px solid #5A0B4D;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: #5A0B4D;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  outline: none;
+}
+
+button {
+  width: 30%;
+  height: 40px;
+  border: 2px solid #5A0B4D;
+  color: #fafafa;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #5A0B4D;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s ease all;
+}
+
+button:hover {
+  color: #5A0B4D;
+  background-color: #fafafa;
+}
+
+.translucent { 
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.main-answer {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 60%;
+  align-items: flex-start;
+  padding: 0px 50px;
+  justify-content: space-between;
+  padding: 10px;
+  text-align: center;
+}
+
+.page-title{
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  color: #5A0B4D;
+}
+
+.recom {
+  text-align: start;
+}
+
+a {
+  text-decoration: none;
+  color: #3b0933;
+}
+
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px 40px 0px 0px;
+  background-color: #fafafa;
+  color: #5A0B4D;
+  font-size: 42px;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+  transition: 0.5s ease all;
+}
+
+.close-button:hover {
+  transform: rotate(180deg);
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  padding: 10px;
+  text-align: flex-start;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  background-color: #eaeaea;
+  padding: 0px 40px;
 }

@@ -6,7 +6,8 @@ export type Palavra = {
 
 export type Pagina = {
     id: number;
-    palavras: Palavra[];
+    vetor: string;
     nome: string;
     url: string;
+    categoria: string;
 }
