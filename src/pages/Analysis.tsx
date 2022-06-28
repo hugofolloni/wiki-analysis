@@ -26,6 +26,7 @@ const Analysis: React.FC = () => {
     const [thirdByCosine, setThirdByCosine] = useState<Similarity>();
     const [fourthByCosine, setFourthByCosine] = useState<Similarity>();
     const [fifthByCosine, setFifthByCosine] = useState<Similarity>();
+    const [period, setPeriod] = useState<string>('');
 
     const [secondaryCategory, setSecondaryCategory] = useState<string>('');
     const [existSecondaryCategory, setExistSecondaryCategory] = useState<boolean>(false);
@@ -80,6 +81,29 @@ const Analysis: React.FC = () => {
         }
     }
 
+    const getFirstPeriod = async () => {
+        try {
+            const proxy = 'https://the-cors.herokuapp.com/';
+            const pageUrl = 'https://pt.wikipedia.org/wiki/' + page;
+            const myURL = `${proxy}${pageUrl}`
+            const { data } = await axios.get(myURL);
+            const $ = cheerio.load(data);
+
+            var textList: string[] = [];
+
+            $('.mw-parser-output > p').each((_idx, el) => {
+                const bodyPart = $(el).text()
+                textList.push(bodyPart)
+            });
+
+            setPeriod(textList[0].split('.')[0]);
+        }
+        catch (error) {
+            console.log(error)
+            console.log("Não foi possível responder sua requisição. Cheque a URL e tente novamente mais tarde!")
+        }
+    }
+
     const getPageTitle = async () => {
             const proxy = 'https://the-cors.herokuapp.com/';
             const pageUrl = 'https://pt.wikipedia.org/wiki/' + page;
@@ -102,7 +126,7 @@ const Analysis: React.FC = () => {
         .then(data => {
             const dbLength = data.length;
             for(var i = 0; i < dbLength; i++){
-                if(data[i].url === 'https://pt.wikipedia.org/wiki/' + page || data[i].nome.toLowerCase() === page.toLowerCase()){
+                if(data[i].url === 'https://pt.wikipedia.org/wiki/' + page || data[i].nome.toLowerCase() === pageTitle.toLowerCase()){
                     continue;
                 }
                 const dbStrings: string[] = data[i].vetor.replace('[', '').replace(']', '').split(',') 
@@ -131,6 +155,7 @@ const Analysis: React.FC = () => {
                 setSecondaryCategory('')
                 setExistSecondaryCategory(false)
             }
+            getFirstPeriod()
             var existOnDB = false;
             console.log(pageTitle)
             fetch(`http://localhost:4000/api/`)
@@ -227,7 +252,7 @@ const Analysis: React.FC = () => {
     return (
         <div className='main'>
             <div className="main-texts">
-                <h4>Me diga a página da wikipedia e eu lhe retorno sua categoria e outras páginas semelhantes!</h4>
+                <h4>Me diga a página da Wikipédia e eu lhe retorno sua categoria e outras páginas semelhantes!</h4>
                 <p>Atenção: deve ser escrito como no título ou URL da página!</p>
             </div>
             <div className="inputs-field">
@@ -242,6 +267,9 @@ const Analysis: React.FC = () => {
                     {showAnswer && (
                         <div className='main-answer'>
                             <h2 className='page-title'>{pageTitle}</h2>
+                            <div className="category">
+                                <h3 style={{fontSize: '12px', fontWeight: '500', textAlign: 'start'}}>{period}.</h3>
+                            </div>
                             <div className="category">
                                 <h3>Categoria: {category}</h3>
                                 {existSecondaryCategory && (

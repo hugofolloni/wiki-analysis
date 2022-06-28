@@ -49,3 +49,5 @@ def run_after_vector_defined():
     populate()
     porcentagem, erros = get_reliability()
     print("Acertividade do algoritmo: {:.2f}%".format(100 - porcentagem * 100))
+
+run_from_scratch()

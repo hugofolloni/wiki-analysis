@@ -1,7 +1,7 @@
 # wiki-analysis
 Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem como intuito responder a categoria de um artigo com base na sua url e outros artigos semelhantes, por meio de comparações usando álgebra linear. 
 
-## Idéia do Projeto
+## Ideia do Projeto
 O projeto se baseou na tentativa de categorizar um artigo da Wikipédia com base em outros artigos, encontrando vetores para cada um deles. Utilizando-se de Álgebra Linear, calcula a similaridade entre as páginas, utilizando o cosseno entre o vetor da página e cada um dos vetores do banco de dados.
 
 ## Estrutura 
@@ -18,7 +18,7 @@ Gera os dados necessários para o funcionamento da aplicação, antes de qualque
     - /words: possui a lista de palavras encontradas nas páginas utilizadas, ordenadas por frequência.
     - vector: possui o vetor final encontrado para ser utilizado pelo algoritmo.
 - scrapper: faz o scrappy das páginas-base.
-- comparision: faz a comparação da página que queremos analisar com as outras do bd.
+- comparision: faz a comparação da página que queremos analisar com as outras do banco de dados.
 - words_frequency: faz a contagem da ocorrência de cada palavra buscando criar o vetor ideal.
 - vector: determina quais palavras valem a pena serem usadas no vector.
 - population: popula o banco de dados com as páginas definidas em categories.
@@ -53,5 +53,31 @@ Todos os processos aqui são realizados em Python, dentro da pasta /server/src/s
     - Após isso, o algoritmo irá enviar os dados para o front-end, que irá montar a página de resultado, mostrando a(s) categoria(s) e recomendar 5 artigos com maior cosseno (mais próximos) quando comparados ao artigo solicitado.
 - Por meio do algoritmo presente em /src/pages/Admin.tsx, o usuário pode apagar dados incorretos do banco de dados, passando o ID no banco de dados.
 
+## Como rodar:
+```bash
+# Clone o repositório 
+$ git clone https://github.com/hugofolloni/wiki-analysis
+
+# Acesse a pasta
+$ cd wiki-analysis
+
+# Instale os pacotes necessários
+$ yarn
+$ cd server 
+$ yarn 
+$ cd ..
+
+# Rode o servidor, para criar o banco de dados
+$ yarn server
+
+# Acesse a pasta de setup e rode o arquivo vector.py
+$ cd server/src/setup
+$ python vector.py
+
+# Volte ao root e rode o front-end
+$ cd ../../../
+$ yarn start
+
+```
 ## Erro inicial
-Tivemos uma porcentagem de erro de 8.8% no algoritmo para um banco recém-criado, de 575 páginas. 
+Inicialmente, para o banco de dados recém-criado, houve uma taxa de acerto de categorias de 91.2%, para 575 páginas. 
