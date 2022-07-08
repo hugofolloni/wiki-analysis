@@ -57,23 +57,32 @@ const Analysis: React.FC = () => {
     
             const words = textList.join('\n').split(' ')
             var pageVector = []
+            var isAlZero = true;
             for(var i = 0; i < vectorWords.length; i++){
                 var count = 0;
                 for(var j = 0; j < words.length; j++){
                     if(vectorWords[i] === words[j]){
                         count++;
+                        isAlZero = false;
                     }
                 }
                 pageVector.push(count)
             }
-            var ocorrencias: Occurrence[] = [];
-            for(var loop = 0; loop < vectorWords.length; loop++){
-                ocorrencias.push({
-                    word: vectorWords[loop],
-                    count: pageVector[loop]
-                })
+            if(isAlZero){
+                alert("Não foi possível atender sua requisição! Ou a página não existe, ou é pequena demais para conseguirmos analisar! Sinto muito!");
+                window.location.reload();
             }
-            return pageVector;
+            else {
+                var ocorrencias: Occurrence[] = [];
+                for(var loop = 0; loop < vectorWords.length; loop++){
+                    ocorrencias.push({
+                        word: vectorWords[loop],
+                        count: pageVector[loop]
+                    })
+                }
+                // console.log(ocorrencias)
+                return pageVector;
+            }
         }
         catch (error) {
             console.log(error)
