@@ -1,14 +1,14 @@
 # wiki-analysis
 Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem como intuito responder a categoria de um artigo com base na sua url e outros artigos semelhantes, por meio de comparações usando álgebra linear. 
 
-- [💡 Ideia do projeto](#💡-ideia-do-projeto)
-- [🧮 Algoritmo](#🧮-algoritmo)
-- [🔴 Live](#🔴-live)
-- [🏗️ Estrutura](#🏗️-estrutura)
-- [🪛 Funcionamento](#🪛-funcionamento)
-- [🖥️ Tecnologias](#🖥️-tecnologias)
-- [📓 Como rodar](#📓-como-rodar)
-- [⛔ Erro inicial](#⛔-erro-inicial)
+- [💡 Ideia do projeto](#-ideia-do-projeto)
+- [🧮 Algoritmo](#-algoritmo)
+- [🔴 Live](#-live)
+- [🏗️ Estrutura](#%EF%B8%8F-estrutura)
+- [🪛 Funcionamento](#-funcionamento)
+- [🖥️ Tecnologias](#-tecnologias)
+- [📓 Como rodar](#-como-rodar)
+- [⛔ Erro inicial](#-erro-inicial)
 
 
 ## 💡 Ideia do Projeto
