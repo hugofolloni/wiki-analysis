@@ -1,8 +1,34 @@
 # wiki-analysis
 Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem como intuito responder a categoria de um artigo com base na sua url e outros artigos semelhantes, por meio de comparações usando álgebra linear. 
 
+- [Ideia do projeto](#ideia-do-projeto)
+- [Algoritmo](#algoritmo)
+- [Estrutura](#estrutura)
+- [Funcionamento](#funcionamento)
+- [Como rodar](#como-rodar)
+- [Erro inicial](#erro-inicial)
+
+
 ## Ideia do Projeto
-O projeto se baseou na tentativa de categorizar um artigo da Wikipédia com base em outros artigos, encontrando vetores para cada um deles. Utilizando-se de Álgebra Linear, calcula a similaridade entre as páginas, utilizando o cosseno entre o vetor da página e cada um dos vetores do banco de dados.
+O projeto se baseou na tentativa de categorizar um artigo da Wikipédia com base em outros artigos, encontrando vetores para cada um deles. Utilizando-se de Álgebra Linear, calcula a similaridade entre as páginas, utilizando o cosseno entre o vetor da página e cada um dos vetores do banco de dados. Além disso, o algoritmo é capaz de aprender com as requisições, se tornando mais eficiente.
+
+## Algoritmo 
+
+O algoritmo construirá, para cada artigo da Wikipédia, um vetor, levando em conta as palavras formadoras de cada dimensão. Então, ele fará a comparação da página com base nos cossenos entre ela e os outros vetores.
+
+##### Fórmula do Cosseno 
+$cos(x, y) = {x^t y \over \||x|| ||y||}$
+
+
+O cosseno varia entre [-1, 1] e, quanto maior, mais semelhantes dois vetores são. Essa foi a estratégia escolhida para comparar nossas páginas, e determinar sua categoria com base nas mais semelhantes.
+
+A cada requisição, o algoritmo salva o novo vetor no banco de dados, e, com isso, aprende e aumenta o número de comparações que ele pode fazer, o que aumenta a eficiência.
+
+## Live 
+O projeto está funcionando sob o [link](https://wiki-analysis.netlify.app/) e possui também uma [API](https://wiki-analysis-ala.herokuapp.com/api/).
+
+Um PDF com o relatório que contém explicações mais detalhadas do projeto está em: [PDF](https://github.com/hugofolloni/wiki-analysis/blob/master/public/relatório.pdf)
+
 
 ## Estrutura 
 ### Front-end 
@@ -70,7 +96,7 @@ $ cd ..
 # Rode o servidor, para criar o banco de dados
 $ yarn server
 
-# Crie a pasta /pages dentro de /server/src/setup/categories para definir as páginas que o algoritmo utilizará para aprender
+# Crie a pasta /pages dentro de /server/src/setup/categories e defina as páginas que o algoritmo utilizará para aprender
 
 # Acesse a pasta de setup e rode o arquivo vector.py
 ## Este arquivo roda todas as funções necessárias para definição do vetor
