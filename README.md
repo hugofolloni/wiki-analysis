@@ -1,18 +1,20 @@
 # wiki-analysis
 Projeto final de Álgebra Linear Algorítmica na turma de 2022.1 da UFRJ, tem como intuito responder a categoria de um artigo com base na sua url e outros artigos semelhantes, por meio de comparações usando álgebra linear. 
 
-- [Ideia do projeto](#ideia-do-projeto)
-- [Algoritmo](#algoritmo)
-- [Estrutura](#estrutura)
-- [Funcionamento](#funcionamento)
-- [Como rodar](#como-rodar)
-- [Erro inicial](#erro-inicial)
+- [💡 Ideia do projeto](#ideia-do-projeto)
+- [🧮 Algoritmo](#algoritmo)
+- [🔴 Live](#live)
+- [🏗️ Estrutura](#estrutura)
+- [🪛 Funcionamento](#funcionamento)
+- [🖥️ Tecnologias](#tecnologias)
+- [📓 Como rodar](#como-rodar)
+- [⛔ Erro inicial](#erro-inicial)
 
 
-## Ideia do Projeto
+## 💡 Ideia do Projeto
 O projeto se baseou na tentativa de categorizar um artigo da Wikipédia com base em outros artigos, encontrando vetores para cada um deles. Utilizando-se de Álgebra Linear, calcula a similaridade entre as páginas, utilizando o cosseno entre o vetor da página e cada um dos vetores do banco de dados. Além disso, o algoritmo é capaz de aprender com as requisições, se tornando mais eficiente.
 
-## Algoritmo 
+## 🧮 Algoritmo 
 
 O algoritmo construirá, para cada artigo da Wikipédia, um vetor, levando em conta as palavras formadoras de cada dimensão. Então, ele fará a comparação da página com base nos cossenos entre ela e os outros vetores.
 
@@ -24,13 +26,13 @@ O cosseno varia entre [-1, 1] e, quanto maior, mais semelhantes dois vetores sã
 
 A cada requisição, o algoritmo salva o novo vetor no banco de dados, e, com isso, aprende e aumenta o número de comparações que ele pode fazer, o que aumenta a eficiência.
 
-## Live 
+## 🔴 Live 
 O projeto está funcionando sob o [link](https://wiki-analysis.netlify.app/) e possui também uma [API](https://wiki-analysis-ala.herokuapp.com/api/).
 
 Um PDF com o relatório que contém explicações mais detalhadas do projeto está em: [PDF](https://github.com/hugofolloni/wiki-analysis/blob/master/public/relatório.pdf)
 
 
-## Estrutura 
+## 🏗️ Estrutura 
 ### Front-end 
 Feito em Typescript + React, possui dois componentes principais:
 - Analysis: responsável pela maioria das funções, recebe uma página do usuário, faz o scrappy, gera o vetor e compara com os vetores do banco de dados. Após isso, faz a requisição para o back-end, salvando a nova página.
@@ -53,7 +55,7 @@ Gera os dados necessários para o funcionamento da aplicação, antes de qualque
 Responsável por enviar os dados para o front-end, e receber as requisições também.
 API gerada com Express e Typescript, cria o banco de dados, fornece os endpoints para a API e faz as requisições para o banco (tanto post, quanto get, delete e put).
 
-## Funcionamento
+## 🪛 Funcionamento
 ### Preparação
 Todos os processos aqui são realizados em Python, dentro da pasta /server/src/setup.
 - O administrador define artigos para cada uma das categorias dentro da pasta /categorias/pages  .
@@ -79,7 +81,21 @@ Todos os processos aqui são realizados em Python, dentro da pasta /server/src/s
     - Após isso, o algoritmo irá enviar os dados para o front-end, que irá montar a página de resultado, mostrando a(s) categoria(s) e recomendar 5 artigos com maior cosseno (mais próximos) quando comparados ao artigo solicitado.
 - Por meio do algoritmo presente em /src/pages/Admin.tsx, o usuário pode apagar dados incorretos do banco de dados, passando o ID no banco de dados.
 
-## Como rodar:
+## 💻 Tecnologias
+- React
+- TypeScript
+- Python
+- NodeJS
+- SQLite
+- Express
+- FS
+- Numpy
+- Vectorius
+- BeautifulSoup
+- Axios
+
+
+## 📓 Como rodar:
 ```bash
 # Clone o repositório 
 $ git clone https://github.com/hugofolloni/wiki-analysis
@@ -108,5 +124,5 @@ $ cd ../../../
 $ yarn start
 
 ```
-## Erro inicial
+## ⛔ Erro inicial
 Inicialmente, para o banco de dados recém-criado, houve uma taxa de acerto de categorias de 91.2%, para 575 páginas. 
