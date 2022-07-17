@@ -70,7 +70,10 @@ $ cd ..
 # Rode o servidor, para criar o banco de dados
 $ yarn server
 
+# Crie a pasta /pages dentro de /server/src/setup/categories para definir as páginas que o algoritmo utilizará para aprender
+
 # Acesse a pasta de setup e rode o arquivo vector.py
+## Este arquivo roda todas as funções necessárias para definição do vetor
 $ cd server/src/setup
 $ python vector.py
 
