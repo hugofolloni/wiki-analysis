@@ -200,6 +200,8 @@ button:hover {
 
 .recom {
   text-align: start;
+  display: flex;
+  flex-direction: column;
 }
 
 a {

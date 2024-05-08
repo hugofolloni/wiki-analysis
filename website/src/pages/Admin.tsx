@@ -6,7 +6,7 @@ const Admin: React.FC = () => {
 
     const  handleDeletePage = () => {
         console.log("Deleteing page with id: " + id);
-        fetch(`http://localhost:4000/api/${id}`, {
+        fetch(`https://wiki-analysis.vercel.app/api/${id}`, {
             method: 'DELETE'          
         })
         setId('')

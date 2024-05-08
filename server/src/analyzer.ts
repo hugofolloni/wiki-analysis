@@ -7,6 +7,7 @@ import { cosine } from "./library"
 
 type Result = {
   title: string,
+  description: string,
   url: string,
   categories: Categories,
   siblings: Comparision[],
@@ -27,7 +28,7 @@ type Categories = {
 
 const categories = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
-const scrapper = async (url: string): Promise<[string, string[]]> => {
+const scrapper = async (url: string): Promise<[string, string, string[]]> => {
   try {
     const response = await axios.get(url);
     const html = response.data;
@@ -38,20 +39,19 @@ const scrapper = async (url: string): Promise<[string, string[]]> => {
     var title;
 
     $('.firstHeading').each(function (i:number, elem:string) {
-      title = $(this).text()
-        textList.push(title);
+        title = $(this).text()
     }
     );
 
     $('.mw-parser-output > p').each((i:number, elem:string) => {
-        const bodyPart = $(elem).text().replace('.', ' ').replace(",", ' ')
+        const bodyPart = $(elem).text()
         textList.push(bodyPart)
     });
 
-    return [title, textList.join('\n').split(' ')];
+    return [title, textList[1].split('.')[0] + ".", textList.join('\n').split(' ')];
   } catch (error) {
     console.error('Error scraping data:', error);
-    return [, []];
+    return [, , []];
   }
 }
 
@@ -61,7 +61,7 @@ const getVector = (page: string[]) => {
     for(var i = 0; i < vector.words.length; i++){
         var count = 0;
         for(var j = 0; j < page.length; j++){
-            if(vector.words[i] === page[j]){
+            if(vector.words[i] === page[j].replace('.', ' ').replace(",", ' ')){
                 count++;
               }
             }
@@ -119,7 +119,8 @@ const analyze = async (url: string) => {
 
     const page = await scrapper(url)
     const title = page[0]
-    const tokens = page[1]
+    const description = page[1]
+    const tokens = page[2]
 
     if(!page){
       throw new Error("Error fetching content!")
@@ -131,11 +132,11 @@ const analyze = async (url: string) => {
     }
     const pages = await PageController.readAll();
     const comparisions = await compare(vector.vector, pages);
-    const proximity = comparisions.slice(0, 5)
+    const proximity = comparisions.slice(0, 6)
     const categories = await categorize(proximity)
-    const response: Result = {title: title, url: url, categories: categories, siblings: proximity, vector: `[${vector.vector}]`}
+    const response: Result = {title: title, description: description, url: url, categories: categories, siblings: proximity, vector: `[${vector.vector}]`}
     return response
 
 }
 
-export default analyze;
+export { analyze };
