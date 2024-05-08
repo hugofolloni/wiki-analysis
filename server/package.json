@@ -4,10 +4,11 @@
   "main": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/index.ts\"",
-    "build": "tsc",
     "start": "nodemon src/index.ts",
-    "populate": "ts-node src/populate.ts"
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
@@ -22,9 +23,16 @@
     "sqlite3": "^5.0.8",
     "typescript": "^5.4.5"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "devDependencies": {
     "@types/pg": "^8.11.6",
     "nodemon": "^3.1.0",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2"
   }
 }
