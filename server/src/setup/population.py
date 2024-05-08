@@ -1,30 +1,34 @@
 from scrapper import scrapping
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
 
-class Pagina (object):
-    def __init__(self, nome, url, vetor, categoria):
-        self.nome = nome
+load_dotenv()
+
+class Page (object):
+    def __init__(self, name, url, vector, category):
+        self.name = name
         self.url = url
-        self.vetor = vetor
-        self.categoria = categoria
+        self.vector = vector
+        self.category = category
 
-files = ['ciencia', 'cinema', 'esportes', 'geografia', 'historia', 'musica', 'sociedade', 'tecnologia']
+files = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
 def get_array_from_file(category):
     category_words = []
-    file = open(f'server/src/setup/categories/vector/{category}.txt', 'r', encoding='utf-8')
+    file = open(f'categories/vector/{category}.txt', 'r', encoding='utf-8')
     for line in file:
         category_words.append(line.split(' ')[0].replace('\n', ''))
     return category_words
 
-science_words = get_array_from_file("ciencia")
-cine_words = get_array_from_file("cinema")
-sport_words = get_array_from_file("esportes")
-geo_words = get_array_from_file("geografia")
-history_words = get_array_from_file("historia")
-music_words = get_array_from_file("musica")
-society_words = get_array_from_file("sociedade")
-tech_words = get_array_from_file("tecnologia")
+science_words = get_array_from_file("science")
+cine_words = get_array_from_file("movie")
+sport_words = get_array_from_file("sports")
+geo_words = get_array_from_file("geography")
+history_words = get_array_from_file("history")
+music_words = get_array_from_file("music")
+society_words = get_array_from_file("society")
+tech_words = get_array_from_file("technology")
 
 def count_words_per_category(infos, category):
     category_vector = []
@@ -37,16 +41,24 @@ def count_words_per_category(infos, category):
         if not exists:
             category_vector.append(0)
     return category_vector
+    
 
 def populate():
-    sql_query = "INSERT INTO pagina (nome, url, vetor, categoria) VALUES (?, ?, ?, ?)"
-    conn = sqlite3.connect('server/db.sqlite')
+    sql_query = 'INSERT INTO page ("name", "url", "vector", "category") VALUES (%s, %s, %s, %s)'
+    conn = psycopg2.connect(
+                        database = os.getenv("DATABASE"), 
+                        user = os.getenv("USER"), 
+                        host= os.getenv("HOST"),
+                        password = os.getenv("PASSWORD"),
+                        port = 5432,
+                        sslmode='require'
+                    )
     c = conn.cursor()
     for category in files:
-        pages = open(f'server/src/setup/categories/pages/{category}.txt', 'r', encoding='utf-8')
+        pages = open(f'categories/pages/{category}.txt', 'r', encoding='utf-8')
         for line in pages:
             try:
-                title, infos, length = scrapping(f'https://pt.wikipedia.org/wiki/{line.strip()}')
+                title, infos, length = scrapping(f'https://en.wikipedia.org/wiki/{line.strip()}')
                 vector =  []
                 vector.extend(count_words_per_category(infos, science_words))
                 vector.extend(count_words_per_category(infos, cine_words))
@@ -56,9 +68,9 @@ def populate():
                 vector.extend(count_words_per_category(infos, music_words))
                 vector.extend(count_words_per_category(infos, society_words))
                 vector.extend(count_words_per_category(infos, tech_words))
-                newPage = Pagina(nome=title, url=f'https://pt.wikipedia.org/wiki/{line.strip()}', vetor=str(vector), categoria=category)
-                c.execute(sql_query, (newPage.nome, newPage.url, newPage.vetor, newPage.categoria))
-                print(f'{newPage.nome} inserted successfully')
-            except:
-                print(f'{line.strip()} error')
+                newPage = Page(name=title, url=f'https://en.wikipedia.org/wiki/{line.strip()}', vector=str(vector), category=category)
+                c.execute(sql_query, (newPage.name, newPage.url, newPage.vector, newPage.category))
+                print(f'{newPage.name} inserted successfully')
+            except Exception as error:
+                print ("Oops! An exception has occured:", error)
     conn.commit()

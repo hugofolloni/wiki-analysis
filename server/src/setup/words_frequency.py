@@ -3,13 +3,13 @@ from generic import generic_words
 
 def get_words_frequency(file_name):
     file = open(f"server/src/setup/categories/pages/{file_name}.txt", 'r', encoding='utf-8')
-    newFile = open(f"server/src/setup/categories/words/{file_name}.txt", "w", encoding="utf-8")
+    newFile = open(f"server/src/setup/categories/words/{file_name}.txt", "w+", encoding="utf-8")
     list_of_words = []
     total_words = 0
     for line in file:
         previous_size = len(list_of_words)
         try:
-            title, infos, length = scrapping(f"https://pt.wikipedia.org/wiki/{line.strip()}")
+            title, infos, length = scrapping(f"https://en.wikipedia.org/wiki/{line.strip()}")
             for info in infos:
                 if (info.name not in generic_words) and len(info.name) > 1:
                     already_in_list = False
@@ -21,13 +21,13 @@ def get_words_frequency(file_name):
                     if not already_in_list:
                         list_of_words.append(info)
                         total_words += 1
-            print(f"{title} adicionou {len(list_of_words) - previous_size} palavras!")
+            print(f"{title} added {len(list_of_words) - previous_size} words!")
         except:
-            print(f"---> Erro ao ler {line.strip()}")
+            print(f"---> Error on read {line.strip()}")
             
     list_of_words.sort(key=lambda x: x.count, reverse=True)
 
-    print(f"Total de palavras: {total_words}")
+    print(f"Total count: {total_words}")
     
     data_size = 400
     if total_words < data_size:

@@ -1,22 +1,32 @@
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
 
-files = ['ciencia', 'cinema', 'esportes', 'geografia', 'historia', 'musica', 'sociedade', 'tecnologia']
+files = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
 class PageCompare:
-    def __init__(self, nome, categoria_vetor, categoria):
-        self.nome = nome
-        self.categoria_vetor = categoria_vetor
-        self.categoria = categoria
+    def __init__(self, name, vector_category, category):
+        self.name = name
+        self.vector_category = vector_category
+        self.category = category
 
 page_list = []
 
 def get_reliability():
-    conn = sqlite3.connect('server/db.sqlite')
+    conn = psycopg2.connect(
+                        database = os.getenv("DATABASE"), 
+                        user = os.getenv("USER"), 
+                        host= os.getenv("HOST"),
+                        password = os.getenv("PASSWORD"),
+                        port = 5432,
+                        sslmode='require'
+                    )
     c = conn.cursor()
     for file in files:
-        pages = open(f'server/src/setup/categories/pages/{file}.txt', 'r', encoding='utf-8')
+        print(file)
+        pages = open(f'categories/pages/{file}.txt', 'r', encoding='utf-8')
         for line in pages:  
-            c.execute("SELECT * FROM pagina WHERE url = ?", (f'https://pt.wikipedia.org/wiki/{line.strip()}',))
+            c.execute("SELECT * FROM page WHERE url = %s", (f'https://en.wikipedia.org/wiki/{line.strip()}',))
             result = c.fetchone()
             if result is not None:
                 vector = result[3].replace('[', '').replace(']', '').split(',')
@@ -60,13 +70,14 @@ def get_reliability():
                 page_list.append(PageCompare(line.strip(), file, vector_category))
     table_size = len(page_list)
     error_list = compare_on_list(page_list)
+    c.close()
     return len(error_list)/table_size, error_list
 
 
 def compare_on_list(lista):
     error_list = []
     for page in lista:
-        if page.categoria != page.categoria_vetor:
+        if page.category != page.vector_category:
             error_list.append(page)
     return error_list
 

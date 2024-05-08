@@ -46,8 +46,3 @@ def isColinear(x, y):
         return True
     else:
         return False
-
-# achar ortogonal (passando array com vetores que a resposta deve ser ortogonal aos dois)
-
-# projecao no plano (passando x e os dois vetores do plano) 
-    ## achar ortogonal, projetar v1 no ortogonal e fazer diferenca entre v1 e sua projecao no ortogonal

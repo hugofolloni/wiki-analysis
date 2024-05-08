@@ -1,5 +1,5 @@
 import express from 'express';
-import PAGES_ROUTER from './routers/pages-routers';
+import routers from './routers';
 import cors from 'cors';
 
 const PORT = process.env.port || 4000;
@@ -17,10 +17,10 @@ app.get('/', (req, res) => {
 );
 
 app.use(cors({  
-    origin: ['http://localhost:3000'],	
+    origin: ['*'],	
 }))
 
-app.use('/api', PAGES_ROUTER);
+app.use('/api', routers);
 
 app.use((req, res) => {
     res.status(404)
@@ -29,4 +29,5 @@ app.use((req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on ${HOSTNAME}:${PORT}`);
 })
+
 

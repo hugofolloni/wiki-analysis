@@ -11,17 +11,20 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/node": "^17.0.39",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.10",
     "@types/sqlite3": "^3.1.8",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.18.1",
     "fs": "^0.0.1-security",
+    "pg": "^8.11.5",
     "sqlite3": "^5.0.8",
-    "typescript": "^4.7.3"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16",
-    "ts-node": "^10.8.1"
+    "@types/pg": "^8.11.6",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2"
   }
 }
