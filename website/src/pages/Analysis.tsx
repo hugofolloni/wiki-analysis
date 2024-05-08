@@ -39,7 +39,7 @@ const Analysis: React.FC = () => {
 
         console.log(searchFor)
 
-        fetch('https://wiki-analysis.vercel.app/api', {
+        fetch('https://corsproxy.io/?https://wiki-analysis.vercel.app/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ const Analysis: React.FC = () => {
             </div>
             <div className="inputs-field">
                 <input type="text" value={page} onChange={(e) => setPage(e.target.value)} onKeyDown={(e) => handleKeyDown(e)}/>
-                <button onClick={() => runVector()}>Analyze</button>
+                <button onClick={() => runVector()}>Go</button>
             </div>
             {showContainer && (
                 <div className="translucent">
