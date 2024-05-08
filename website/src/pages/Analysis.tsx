@@ -32,13 +32,20 @@ const Analysis: React.FC = () => {
     const runVector = () => {
         setShowContainer(true)
 
-        fetch('https://cors-anywhere.herokuapp.com/https://wiki-analysis.vercel.app/api', {
+        var searchFor = page
+        if(page.indexOf('en.wikipedia.org') === -1){
+            searchFor = `https://en.wikipedia.org/wiki/${page.replace(" ", "_")}`
+        }
+
+        console.log(searchFor)
+
+        fetch('https://wiki-analysis.vercel.app/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body:JSON.stringify({
-                url: "https://en.wikipedia.org/wiki/Deftones"
+                url: `${searchFor}`
             })
         })
         .then(res => res.json())
