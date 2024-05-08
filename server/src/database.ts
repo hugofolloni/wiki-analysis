@@ -6,18 +6,9 @@ dotenv.config()
 async function connect() {
 
   const pool = new Pool({
-    user: process.env.USER,
-    host: process.env.HOST,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    port: 5432,
+    connectionString:  `postgres://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:5432/${process.env.DATABASE}`,
     ssl: {
         rejectUnauthorized: false
-    },
-    dialect: "postgres",
-    native: true,
-    dialectOptions: {
-      ssl: true
     }
   });
  
