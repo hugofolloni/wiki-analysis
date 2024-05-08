@@ -1,10 +1,19 @@
 import { Page } from './models/page'; 
 const database = require('./database');
+import analyze from "./analyzer"
 
 const PageController = {
-    create: async (page: Page) => {
-        const sql = `INSERT INTO page (nome, url, vetor, categoria) VALUES (${page.name}, ${page.url}, ${page.vector}, ${page.category})`;
+    create: async (page:any) => {
+        const analysis = await analyze(page.url)
+        console.log(analysis)
 
+        
+
+        const sql = `INSERT INTO page (nome, url, vetor, categoria) VALUES (${analysis.title}, ${analysis.url}, ${analysis.vector}, ${page.category})`;
+
+        console.log(sql)
+
+        // return true;
         const result = await database.query(sql)
         return result;
     },
@@ -42,7 +51,7 @@ const PageController = {
 
         await database.query(sql);
         return true; 
-    } 
+    }
 }
 
 export default PageController;

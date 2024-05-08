@@ -5,6 +5,7 @@ import  PageController from './controllers';
 const router = express.Router();
 
 router.get("/", async (req, res) => {
+    res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.send(await PageController.readAll())
 })
 
@@ -22,7 +23,8 @@ router.get('/name/:name', async (req, res) => {
 );
 
 router.post('/', async (req, res) => {
-    res.json(await PageController.create(req.body as Page))
+    console.log('here')
+    res.json(await PageController.create(req.body))
 });
 
 router.delete('/:id', async (req, res) => {

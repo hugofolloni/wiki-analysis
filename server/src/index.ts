@@ -1,5 +1,5 @@
 import express from 'express';
-import routers from './routers';
+import router from './routers';
 import cors from 'cors';
 
 const PORT = process.env.port || 4000;
@@ -20,7 +20,7 @@ app.use(cors({
     origin: ['*'],	
 }))
 
-app.use('/api', routers);
+app.use('/api', router);
 
 app.use((req, res) => {
     res.status(404)
