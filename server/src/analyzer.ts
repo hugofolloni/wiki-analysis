@@ -116,7 +116,7 @@ const categorize = (proximity: Comparision[]) => {
 
 
 const analyze = async (url: string) => {
-  try {
+
     const page = await scrapper(url)
     const title = page[0]
     const tokens = page[1]
@@ -132,14 +132,10 @@ const analyze = async (url: string) => {
     const pages = await PageController.readAll();
     const comparisions = await compare(vector.vector, pages);
     const proximity = comparisions.slice(0, 5)
-    const categories = categorize(proximity)
+    const categories = await categorize(proximity)
     const response: Result = {title: title, url: url, categories: categories, siblings: proximity, vector: `[${vector.vector}]`}
-    console.log(response)
     return response
-  }
-  catch (error) {
-    console.log(error)
-  }
+
 }
 
 export default analyze;

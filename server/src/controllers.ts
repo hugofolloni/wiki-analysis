@@ -3,19 +3,20 @@ const database = require('./database');
 import analyze from "./analyzer"
 
 const PageController = {
-    create: async (page:any) => {
-        const analysis = await analyze(page.url)
+    create: async (body:any) => {
+        const analysis = await analyze(body.url)
         console.log(analysis)
 
         
+        const sql = `INSERT INTO page (name, url, vector, category) VALUES ('${analysis.title}', '${analysis.url}', '${analysis.vector}', '${analysis.categories.main}')`;
 
-        const sql = `INSERT INTO page (nome, url, vetor, categoria) VALUES (${analysis.title}, ${analysis.url}, ${analysis.vector}, ${page.category})`;
-
-        console.log(sql)
-
-        // return true;
-        const result = await database.query(sql)
-        return result;
+        const exists = await database.query(`SELECT COUNT(*) FROM page WHERE name = '${analysis.title}'`)
+        
+        if(parseInt(exists[0].count) === 0){
+            await database.query(sql)
+        }
+        
+        return analysis;
     },
 
     readAll: async () => {
