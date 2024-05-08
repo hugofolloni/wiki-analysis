@@ -13,7 +13,12 @@ async function connect() {
     port: 5432,
     ssl: {
         rejectUnauthorized: false
-      }
+    },
+    dialect: "postgres",
+    native: true,
+    dialectOptions: {
+      ssl: true
+    }
   });
  
     //apenas testando a conexão
