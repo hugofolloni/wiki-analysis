@@ -49,11 +49,11 @@ const PageController = {
         return result;
     },
 
-    delete: async (id: number) => {
-        const sql = `DELETE FROM page WHERE id = ${id}`;
+    delete: async (nome: string) => {
+        const sql = `DELETE FROM page WHERE name = '${nome.replace("_", " ")}';`;
 
-        await database.query(sql);
-        return true; 
+        const result = await database.query(sql)
+        return result;
     }
 }
 

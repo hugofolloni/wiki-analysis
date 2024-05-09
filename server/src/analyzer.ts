@@ -48,7 +48,7 @@ const scrapper = async (url: string): Promise<[string, string, string[]]> => {
         textList.push(bodyPart)
     });
 
-    return [title, textList[1].split('.')[0] + ".", textList.join('\n').split(' ')];
+    return [title, textList[0].split('.')[0] + ".", textList.join('\n').split(' ')];
   } catch (error) {
     console.error('Error scraping data:', error);
     return [, , []];

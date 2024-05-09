@@ -27,8 +27,8 @@ router.post('/', async (req, res) => {
     res.json(await PageController.create(req.body))
 });
 
-router.delete('/:id', async (req, res) => {
-    res.send(await PageController.delete(parseInt(req.params.id)));
+router.delete('/name/:name', async (req, res) => {
+    res.send(await PageController.delete(req.params.name));
 });
 
 export default router;
