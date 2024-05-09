@@ -42,15 +42,15 @@ const PageController = {
         return result;
     },
 
-    readByName: async (nome: string) => {
-        const sql = `SELECT * FROM page WHERE name = '${nome}';`;
+    readByName: async (name: string) => {
+        const sql = `SELECT * FROM page WHERE name = '${name}';`;
 
         const result = await database.query(sql)
         return result;
     },
 
-    delete: async (nome: string) => {
-        const sql = `DELETE FROM page WHERE name = '${nome.replace("_", " ")}';`;
+    delete: async (name: string) => {
+        const sql = `DELETE FROM page WHERE LOWER(name) = '${name.toLowerCase().replace("_", " ")}';`;
 
         const result = await database.query(sql)
         return result;
