@@ -25,7 +25,7 @@ With each request, the algorithm saves the new vector in the database, thus lear
 ## 🔴 Live 
 The project is live at the [link](https://wiki-analysis.netlify.app/) and also has an [API](https://wiki-analysis.vercel.app/api).
 
-<!-- A PDF with the report containing more detailed explanations of the project is available at: [PDF](https://github.com/hugofolloni/wiki-analysis/blob/master/public/relatório.pdf) -->
+A PDF with the report (in Portuguese) containing more detailed explanations of the project is available at: [PDF](https://github.com/hugofolloni/wiki-analysis/blob/master/website/public/relatório.pdf)
 
 
 ## 🏗️ Structure 

@@ -13,7 +13,7 @@ const PageController = {
             analysis.siblings = analysis.siblings.slice(0, -1)
         }
         else {
-            await database.query(`UPDATA page SET category = '${analysis.categories.main}' WHERE name = '${analysis.title}'`)
+            await database.query(`UPDATE page SET category = '${analysis.categories.main}' WHERE name = '${analysis.title}'`)
             analysis.siblings = analysis.siblings.slice(1)
         }
 
