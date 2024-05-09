@@ -5,16 +5,15 @@ import { analyze } from "./analyzer"
 const PageController = {
     create: async (body:any) => {
         const analysis = await analyze(body.url)
-        
-        const sql = `INSERT INTO page (name, url, vector, category) VALUES ('${analysis.title}', '${analysis.url}', '${analysis.vector}', '${analysis.categories.main}')`;
-        
+                
         const exists = await database.query(`SELECT COUNT(*) FROM page WHERE name = '${analysis.title}'`)
         
         if(parseInt(exists[0].count) === 0){
-            await database.query(sql)
+            await database.query(`INSERT INTO page (name, url, vector, category) VALUES ('${analysis.title}', '${analysis.url}', '${analysis.vector}', '${analysis.categories.main}')`)
             analysis.siblings = analysis.siblings.slice(0, -1)
         }
         else {
+            await database.query(`UPDATA page SET category = '${analysis.categories.main}' WHERE name = '${analysis.title}'`)
             analysis.siblings = analysis.siblings.slice(1)
         }
 
