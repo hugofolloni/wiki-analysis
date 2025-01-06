@@ -132,8 +132,8 @@ const categorize = (proximity: Comparision[]) => {
 const analyze = async (url: string) => {
 
     const page = await scrapper(url)
-    const title = page[0]
-    const description = page[1]
+    const title = page[0].replace("'", "''")
+    const description = page[1].replace("'", "''")
     const tokens = page[2]
 
     if(!page){
@@ -148,7 +148,7 @@ const analyze = async (url: string) => {
     const comparisions = await compare(vector.vector, pages);
     const proximity = comparisions.slice(0, 6)
     const categories = await categorize(proximity)
-    const response: Result = {title: title, description: description, url: url, categories: categories, siblings: proximity, vector: `[${vector.vector}]`}
+    const response: Result = {title: title, description: description, url: url.replace("'", "''"), categories: categories, siblings: proximity, vector: `[${vector.vector}]`}
     return response
 
 }
