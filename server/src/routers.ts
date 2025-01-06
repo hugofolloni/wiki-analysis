@@ -23,7 +23,6 @@ router.get('/name/:name', async (req, res) => {
 );
 
 router.post('/', async (req, res) => {
-    console.log('here')
     res.json(await PageController.create(req.body))
 });
 
