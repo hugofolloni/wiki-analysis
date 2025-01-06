@@ -23,7 +23,7 @@ The cosine varies between [-1, 1], and the higher it is, the more similar two ve
 With each request, the algorithm saves the new vector in the database, thus learning and increasing the number of comparisons it can make, which increases efficiency.
 
 ## 🔴 Live 
-The project is live at the [link](https://wiki-analysis.netlify.app/) and also has an [API](https://wiki-analysis.vercel.app/api).
+The project is live at the [link](https://wiki-analysis.netlify.app/) and also has an [API](http://localhost:4000/api).
 
 A PDF with the report (in Portuguese) containing more detailed explanations of the project is available at: [PDF](https://github.com/hugofolloni/wiki-analysis/blob/master/website/public/relatório.pdf)
 

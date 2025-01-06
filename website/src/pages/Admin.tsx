@@ -2,14 +2,14 @@ import React from "react";
 
 const Admin: React.FC = () => {
 
-    const [id, setId] = React.useState<string>("");
+    const [name, setName] = React.useState<string>("");
 
     const  handleDeletePage = () => {
-        console.log("Deleteing page with id: " + id);
-        fetch(`https://wiki-analysis.vercel.app/api/${id}`, {
+        console.log("Deleteing page with id: " + name);
+        fetch(`http://localhost:4000/api/name/${name}`, {
             method: 'DELETE'          
         })
-        setId('')
+        setName('')
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -24,7 +24,7 @@ const Admin: React.FC = () => {
             <div className="main">
                 <h1>Admin</h1>
                 <div className="admin-container" style={{ width: '50%'}}>
-                    <input type="text" value={id} onChange={(e) => setId(e.target.value)} onKeyDown={(e) => handleKeyDown(e)}/>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => handleKeyDown(e)}/>
                     <button onClick={() => handleDeletePage()}>Delete</button>
                 </div>
             </div>

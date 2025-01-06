@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 );
 
 app.use(cors({  
-    origin: ['*'],	
+    origin: '*',	
 }))
 
 app.use('/api', router);

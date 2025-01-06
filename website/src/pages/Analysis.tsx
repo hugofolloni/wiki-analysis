@@ -39,7 +39,7 @@ const Analysis: React.FC = () => {
 
         console.log(searchFor)
 
-        fetch('https://corsproxy.io/?https://wiki-analysis.vercel.app/api', {
+        fetch('http://localhost:4000/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
