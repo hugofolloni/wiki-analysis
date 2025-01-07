@@ -2,7 +2,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
-files = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
+files = ['science', 'entertainment', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
 class PageCompare:
     def __init__(self, name, vector_category, category):

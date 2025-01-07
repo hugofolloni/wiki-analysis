@@ -86,7 +86,7 @@ const categorize = (proximity: Comparision[]) => {
   const sortedCategories = Object.entries(countMap).sort((a, b) => b[1] - a[1]); 
 
   category.main = sortedCategories[0][0]; 
-  if (sortedCategories[1][1] === 2) {
+  if (sortedCategories.length > 1 && sortedCategories[1][1] === 2) {
     category.secondary = sortedCategories[1][0];
   }
   

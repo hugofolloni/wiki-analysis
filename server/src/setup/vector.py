@@ -2,7 +2,7 @@ from words_frequency import get_words_frequency
 from population import populate
 from reliability import get_reliability
 
-files = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
+files = ['science', 'entertainment', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
 def get_category_words(file_name):
     file = open(f'server/src/setup/categories/words/{file_name}.txt', 'r', encoding='utf-8')

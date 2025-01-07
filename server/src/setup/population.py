@@ -12,7 +12,7 @@ class Page (object):
         self.vector = vector
         self.category = category
 
-files = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
+files = ['science', 'entertainment', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
 def get_array_from_file(category):
     category_words = []
@@ -22,7 +22,7 @@ def get_array_from_file(category):
     return category_words
 
 science_words = get_array_from_file("science")
-cine_words = get_array_from_file("movie")
+cine_words = get_array_from_file("entertainment")
 sport_words = get_array_from_file("sports")
 geo_words = get_array_from_file("geography")
 history_words = get_array_from_file("history")
