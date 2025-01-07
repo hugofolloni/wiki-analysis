@@ -84,12 +84,11 @@ const categorize = (proximity: Comparision[]) => {
   }
 
   const sortedCategories = Object.entries(countMap).sort((a, b) => b[1] - a[1] || proximity.findIndex(p => p.category === a[0]) - proximity.findIndex(p => p.category === b[0])); 
-
+  console.log(sortedCategories)
+  
   category.main = sortedCategories[0][0];
 
-  if (sortedCategories[0][1] >= 3 && sortedCategories.length > 1 && sortedCategories[1][1] === 2) {
-    category.secondary = sortedCategories[1][0];
-  } else if (sortedCategories[0][1] === 2 && sortedCategories.length > 1 && sortedCategories[1][1] === 2) {
+  if (sortedCategories.length > 1 && sortedCategories[1][1] === 2) {
     category.secondary = sortedCategories[1][0];
   }
 
