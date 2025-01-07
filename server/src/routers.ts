@@ -1,5 +1,5 @@
 import express from 'express';
-import { Page } from './models/page';
+import { Page } from './models/models';
 import  PageController from './controllers';
 
 const router = express.Router();

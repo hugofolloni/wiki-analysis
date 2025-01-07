@@ -1,4 +1,4 @@
-import { Page } from './models/page'; 
+import { Page } from './models/models'; 
 const database = require('./database');
 import { analyze } from "./analyzer"
 

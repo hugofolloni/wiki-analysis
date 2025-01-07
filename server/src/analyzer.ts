@@ -2,31 +2,8 @@ import axios from 'axios';
 var vector = require('./vector.json');
 const cheerio = require('cheerio');
 import  PageController from './controllers';
-import { Page } from "./models/page"
+import { Page, Result, Comparision, Categories } from "./models/models"
 import { cosine } from "./library"
-
-type Result = {
-  title: string,
-  description: string,
-  url: string,
-  categories: Categories,
-  siblings: Comparision[],
-  vector: string
-}
-
-type Comparision = {
-  page: string,
-  cosine: number,
-  category: string,
-  url: string
-}
-
-type Categories = {
-  main: string,
-  secondary: string
-}
-
-const categories = ['science', 'movie', 'sports', 'geography', 'history', 'music', 'society', 'technology']
 
 const scrapper = async (url: string): Promise<[string, string, string[]]> => {
   try {
@@ -99,33 +76,21 @@ const compare = (vector: number[], pages: Page[]) => {
 }
 
 const categorize = (proximity: Comparision[]) => {
-  var category:Categories = {main: null, secondary: null};
-  var count = [0, 0, 0, 0, 0, 0, 0, 0];
-  for(let i = 0; i < proximity.length; i++){
-    const siblingCategory = proximity[i].category;
-    for(let j = 0; j < categories.length; j++){
-      const thisCategory = categories[j]
-      if(siblingCategory === thisCategory){
-        count[j]++
-      }
-    }
+  const category: Categories = { main: null, secondary: null };
+  const countMap: Record<string, number> = {};
+
+  for (const item of proximity) {
+    countMap[item.category] = (countMap[item.category] || 0) + 1;
   }
-  for(let i = 0; i < categories.length; i++){
-    if(count[i] >= 3){
-      category.main = categories[i]
-    }
+
+  const sortedCategories = Object.entries(countMap).sort((a, b) => b[1] - a[1]); 
+
+  category.main = sortedCategories[0][0]; 
+  if (sortedCategories[1][1] === 2) {
+    category.secondary = sortedCategories[1][0];
   }
-  for(let i = 0; i < categories.length; i++){
-    if(count[i] == 2){
-      if(category.main === null){
-          category.main = categories[i]
-      }
-      else {
-        category.secondary = categories[i]
-      }
-    }
-  }
-  return category
+  
+  return category;
 }
 
 
