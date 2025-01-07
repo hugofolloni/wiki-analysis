@@ -39,7 +39,7 @@ const Analysis: React.FC = () => {
 
         console.log(searchFor)
 
-        fetch('http://localhost:4000/api', {
+        fetch('https://wiki-analysis.vercel.app/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
