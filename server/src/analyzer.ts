@@ -76,6 +76,7 @@ const compare = (vector: number[], pages: Page[]) => {
 }
 
 const categorize = (proximity: Comparision[]) => {
+  console.log(proximity)
   const category: Categories = { main: null, secondary: null };
   const countMap: Record<string, number> = {};
 
@@ -85,7 +86,7 @@ const categorize = (proximity: Comparision[]) => {
 
   const sortedCategories = Object.entries(countMap).sort((a, b) => b[1] - a[1] || proximity.findIndex(p => p.category === a[0]) - proximity.findIndex(p => p.category === b[0])); 
   console.log(sortedCategories)
-  
+
   category.main = sortedCategories[0][0];
 
   if (sortedCategories.length > 1 && sortedCategories[1][1] === 2) {
@@ -99,21 +100,27 @@ const categorize = (proximity: Comparision[]) => {
 const analyze = async (url: string) => {
 
     const page = await scrapper(url)
+    
+    if (!page || !page[0] || !page[1]) {
+      throw new Error("Error fetching content: Missing title or description!");
+  }
+
     const title = page[0].replace("'", "''")
     const description = page[1].replace("'", "''")
     const tokens = page[2]
 
-    if(!page){
-      throw new Error("Error fetching content!")
-    }
-  
     const vector = await getVector(tokens);
     if(vector.entries === 0){
       throw new Error("Page is empty");
     }
+
     const pages = await PageController.readAll();
     const comparisions = await compare(vector.vector, pages);
-    const proximity = comparisions.slice(0, 6)
+    var slicer = [0, 5]
+    if(comparisions[0].page === title){
+      slicer = [1, 6]
+    }
+    const proximity = comparisions.slice(slicer[0], slicer[1])
     const categories = await categorize(proximity)
     const response: Result = {title: title, description: description, url: url.replace("'", "''"), categories: categories, siblings: proximity, vector: `[${vector.vector}]`}
     return response

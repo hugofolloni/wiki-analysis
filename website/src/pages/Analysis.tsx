@@ -1,31 +1,11 @@
 import { ReactNode, useState } from 'react';
+import { Result } from './models'
 
 const Analysis: React.FC = () => {
 
-    type Page = {
-        title: string,
-        url: string,
-        categories: Categories,
-        siblings: Comparision[],
-        vector: string,
-        description: string
-      }
-      
-      type Comparision = {
-        page: string,
-        cosine: number,
-        category: string,
-        url: string
-      }
-      
-      type Categories = {
-        main: string,
-        secondary: string
-      }
-
     const [page, setPage] = useState<string>("")
 
-    const [data, setData] = useState({} as Page)
+    const [data, setData] = useState({} as Result)
     const [showContainer, setShowContainer] = useState(false)
     const [showAnswer, setShowAnswer] = useState(false)
 
@@ -56,7 +36,6 @@ const Analysis: React.FC = () => {
         .then(() => 
             setShowAnswer(true)
         )
-
     }
 
 
@@ -77,10 +56,10 @@ const Analysis: React.FC = () => {
                 <button onClick={() => runVector()}>Go</button>
             </div>
             {showContainer && (
-                <div className="translucent">
+                <div className="answer-wrapper">
+                    <div className="translucent" onClick={() => window.location.reload()}/>
                     <div className="answer-div">
                     <p onClick={() => window.location.reload()} className='close-button'>X</p>
-                    <div className="loader"/>
                     {(showAnswer && (
                         <div className='main-answer'>
                             <h2 className='page-title'>{data.title}</h2>

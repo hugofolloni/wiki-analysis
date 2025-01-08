@@ -30,13 +30,13 @@ body {
   top: 50%;
   left: 50%;
   border: 2px solid #fff;
-  animation: load 3s 1 ease;
+  animation: load 7s infinite ease;
 }
 
 body {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100vw;
   height: 100vh;
 }
@@ -91,12 +91,15 @@ body {
   display: flex;
   flex-direction: column;
   width: 60vw;
-  height: 30vh;
+  height: fit-content;
+  padding: 5vh 0;
   border: 1px solid #5A0B4D;
   border-radius: 10px;
   background-color: #fafafa;
   align-items: center;
   justify-content: space-around;
+  margin-top: 30vh;
+  margin-bottom: 10vh;
 }
 
 .main-texts {
@@ -169,8 +172,7 @@ button:hover {
   background-color: #fafafa;
 }
 
-.translucent { 
-  background-color: rgba(0, 0, 0, 0.5);
+.answer-wrapper { 
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -179,13 +181,19 @@ button:hover {
   z-index: 1;
 }
 
+.translucent {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+}
+
 .main-answer {
   display: flex;
   flex-direction: column;
   width: 80%;
-  height: 60%;
+  height: 70%;
   align-items: flex-start;
-  padding: 0px 50px;
   justify-content: space-between;
   padding: 10px;
   text-align: center;
@@ -240,7 +248,7 @@ a {
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
@@ -249,4 +257,93 @@ a {
   align-items: center;
   background-color: #eaeaea;
   padding: 0px 40px;
+}
+
+.admin-container {
+  width: 90%;
+  display: flex;
+  height: fit-content;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.admin-item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 5px 0;
+  height: fit-content;
+  padding: 10px;
+  border: 1px solid #3b0933;
+  border-radius: 12px;
+}
+
+.admin-item div {
+  margin-left: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 30%;  
+  border: 2px solid #5A0B4D;
+  color: #fafafa;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #5A0B4D;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s ease all;
+}
+
+.admin-item div:hover {
+  color: #5A0B4D;
+  background-color: #fafafa;
+}
+
+.admin-item h4 {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5%;
+}
+
+.admin-item h2 {
+  width: 40%;
+}
+
+.admin-selector {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 160px;
+}
+
+.admin-selector h3 {
+  font-size: 72px;
+  cursor: pointer;
+  color: #3b0933;
+  transition: 0.3s ease all;
+}
+
+.admin-selector h3:hover {
+  color: #5A0B4D;
+}
+
+.admin-selector h4 {
+  margin-left: 50px;
+}
+
+@media (max-width: 1000px) {
+  .main {
+    width: 90vw;
+  }
 }

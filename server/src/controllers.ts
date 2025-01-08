@@ -1,4 +1,3 @@
-import { Page } from './models/models'; 
 const database = require('./database');
 import { analyze } from "./analyzer"
 
@@ -10,11 +9,9 @@ const PageController = {
         
         if(parseInt(exists[0].count) === 0){
             await database.query(`INSERT INTO page (name, url, vector, category) VALUES ('${analysis.title}', '${analysis.url}', '${analysis.vector}', '${analysis.categories.main}')`)
-            analysis.siblings = analysis.siblings.slice(0, -1)
         }
         else {
             await database.query(`UPDATE page SET category = '${analysis.categories.main}' WHERE name = '${analysis.title}'`)
-            analysis.siblings = analysis.siblings.slice(1)
         }
 
         return analysis;
@@ -49,7 +46,7 @@ const PageController = {
     },
 
     delete: async (name: string) => {
-        const sql = `DELETE FROM page WHERE LOWER(name) = '${name.toLowerCase().replace("_", " ")}';`;
+        const sql = `DELETE FROM page WHERE LOWER(name) = '${name.toLowerCase().replace("_", " ").replace("'", "''")}';`;
 
         const result = await database.query(sql)
         return result;
