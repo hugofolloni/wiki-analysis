@@ -16,9 +16,11 @@ app.get('/', (req, res) => {
     }
 );
 
-app.use(cors({  
-    origin: '*',	
-}))
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://wiki-analysis.netlify.app'], // Lista de origens permitidas
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use('/api', router);
 
