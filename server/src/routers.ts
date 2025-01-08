@@ -5,7 +5,6 @@ import  PageController from './controllers';
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.send(await PageController.readAll())
 })
 
