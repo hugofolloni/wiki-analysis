@@ -48,7 +48,7 @@ const Analysis: React.FC = () => {
     return (
         <div className='main'>
             <div className="main-texts">
-                <h4>Tell me a Wikipedia page and I'll reveal its category and similar ones!</h4>
+                <h2>I CAN REVEAL A WIKIPEDIA CATEGORY</h2>
                 <p>Enter the page title exactly as it appears in the title bar or URL.</p>
             </div>
             <div className="inputs-field">
